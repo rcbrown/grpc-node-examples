@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.rcbrown.grpc.v1;
+
+import "com/rcbrown/grpc/v1/library_book.proto";
+
+// A minimal sample API that a library might present.
+service LibraryAPI {
+    // Retrieves all of the books in the library.
+    rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
+    // Checks out a book identified by title.
+    rpc CheckoutBook(CheckoutBookRequest) returns (CheckoutBookResponse);
+}
+
+message GetBooksRequest {
+    // No parameters needed; all books are returned
+}
+
+message GetBooksResponse {
+    repeated LibraryBook library_books = 1;
+}
+
+message CheckoutBookRequest {
+    string title = 1;
+}
+
+message CheckoutBookResponse {
+    LibraryBook library_book = 1;
+}

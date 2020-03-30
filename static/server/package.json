@@ -1,0 +1,36 @@
+{
+  "name": "grpc-node-examples-static",
+  "version": "1.0.0",
+  "description": "Static code generation example project",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run codegen && node --inspect-brk=9229 .",
+    "codegen": "mkdirp generated && grpc_tools_node_protoc --proto_path=../../proto --js_out=import_style=commonjs_strict,binary:generated --grpc_out=generated ../../proto/com/rcbrown/grpc/v1/*.proto"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git:git@github.com/rcbrown/grpc-node-examples.git"
+  },
+  "keywords": [
+    "node",
+    "grpc",
+    "protobuf",
+    "protoc",
+    "static"
+  ],
+  "author": "Russell C. Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcbrown/grpc-node-examples/issues"
+  },
+  "homepage": "https://github.com/rcbrown/grpc-node-examples#readme",
+  "dependencies": {
+    "google-protobuf": "^3.11.4",
+    "grpc": "^1.24.2"
+  },
+  "devDependencies": {
+    "grpc-tools": "^1.8.1",
+    "mkdirp": "^1.0.3"
+  }
+}

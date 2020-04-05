@@ -8,71 +8,61 @@ const libraryBookPb = require('../generated/library_book_pb');
 
 const LibraryDao = require('../../../dao/LibraryDao');
 
-module.exports = class LibraryApiServer {
+module.exports = class LibraryApiClient {
 
     constructor({ host, port }) {
-        this.server = new grpc.Server();
-        this.server.addService(libraryApiGrpc.LibraryAPIService, this);
-        this.server.bind(`${host}:${port}`, grpc.ServerCredentials.createInsecure());
-        this.dao = new LibraryDao();
+        this.client = new libraryApiGrpc.LibraryAPIClient(`${host}:${port}`, grpc.credentials.createInsecure());
     }
 
-    start() {
-        this.server.start();
-    }
+    mapCheckoutStatusToString(receivedInt) {
+        return Object.keys(libraryBookPb.CheckoutStatus).find(key => libraryBookPb.CheckoutStatus[key] === receivedInt);
+    };
 
-    async shutdown() {
-        return new Promise((resolve, reject) => {
-            this.server.tryShutdown((error, result) => {
+    async getBooks() {
+        // Build request message
+        const getBooksRequestPb = new libraryApiPb.GetBooksRequest();
+
+        // Invoke the RPC
+        const getBooksResponsePb = await new Promise((resolve, reject) => {
+            this.client.getBooks(getBooksRequestPb, (error, getBooksResponsePb) => {
                 if (error) reject(error);
-                else resolve(result);
+                else resolve(getBooksResponsePb);
             });
         });
+
+        // Unmarshal the response message into regular JavaScript objects
+        const booksPb = getBooksResponsePb.getLibraryBooksList();
+        const books = booksPb.map(bookPb => ({
+                title: bookPb.getTitle(),
+                author: bookPb.getAuthor(),
+                checkoutStatus: this.mapCheckoutStatusToString(bookPb.getCheckoutStatus()),
+            })
+        );
+
+        return books;
     }
 
-    // Handlers: These will be called by gRPC when their corresponding RPCs are called.
-    // They are matched by name.
+    async checkoutBook(title) {
+        // Build request message
+        const checkoutBookRequestPb = new libraryApiPb.CheckoutBookRequest();
+        checkoutBookRequestPb.setTitle(title);
 
-    getBooks = (call, callback) => {
-
-        const getBooksRequest = new libraryApiPb.getBookksRequest();
-        // This is the only business logic
-        const books = this.dao.getBooks();
-
-        // Need to map JSON array of objects into protobuf using the generated marshalling code.
-        const pbBooks = books.map(book => {
-            const pbBook = new libraryBookPb.LibraryBook();
-            pbBook.setTitle(book.title);
-            pbBook.setAuthor(book.author);
-            pbBook.setCheckoutStatus(libraryBookPb.CheckoutStatus[book.checkoutStatus]);
-            return pbBook;
+        // Invoke the RPC
+        const checkoutBookResponsePb = await new Promise((resolve, reject) => {
+            this.client.checkoutBook(checkoutBookRequestPb, (error, checkoutBookResponsePb) => {
+                if (error) reject(error);
+                else resolve(checkoutBookResponsePb);
+            })
         });
-        
-        const getBooksResponse = new libraryApiPb.GetBooksResponse();
-        getBooksResponse.setLibraryBooksList(pbBooks);
-        callback(null, getBooksResponse);
-    }
 
-    checkoutBook = (call, callback) => {
+        // Unmarshal the response message into a regular JavaScript object
+        const bookPb = checkoutBookResponsePb.getLibraryBook();
+        const book = {
+            title: bookPb.getTitle(),
+            author: bookPb.getAuthor(),
+            checkoutStatus: this.mapCheckoutStatusToString(bookPb.getCheckoutStatus()),
+        };
 
-        // call.request is a protobuf object containing a CheckoutBookRequest protobuf object,
-        // which contains a field for the title.
-        const title = call.request.getTitle();
-
-        // Here's the business logic;
-        const book = this.dao.checkoutBook(title);
-
-        // Create a protobuf book for the return message
-        const pbBook = new libraryBookPb.LibraryBook();
-        pbBook.setTitle(book.title);
-        pbBook.setAuthor(book.author);
-        pbBook.setCheckoutStatus(libraryBookPb.CheckoutStatus[book.checkoutStatus]);
-
-        // The actual return value is a protobuf CheckoutBookResponse,
-        // into which we must stuff the LibraryBook
-        const checkoutBookResponse = new libraryApiPb.CheckoutBookResponse();
-        checkoutBookResponse.setLibraryBook(pbBook);
-        
-        callback(null, checkoutBookResponse);
+        return book;
     }
 }

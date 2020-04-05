@@ -6,9 +6,8 @@
     "scripts": {
         "clean": "rimraf generated",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "npm run codegen && node .",
-        "debug": "npm run codegen && node --inspect-brk=9229 .",
-        "codegen": "mkdirp generated && grpc_tools_node_protoc --proto_path=../proto --js_out=import_style=commonjs_strict,binary:generated --grpc_out=generated ../proto/*.proto"
+        "start": "npm run codegen && node --inspect-brk=9229 .",
+        "codegen": "mkdirp generated && grpc_tools_node_protoc --proto_path=../../proto --js_out=import_style=commonjs_strict,binary:generated --grpc_out=generated ../../proto/com/rcbrown/grpc/v1/*.proto"
     },
     "repository": {
         "type": "git",
@@ -27,9 +26,6 @@
         "url": "https://github.com/rcbrown/grpc-node-examples/issues"
     },
     "homepage": "https://github.com/rcbrown/grpc-node-examples#readme",
-    "engines": {
-        "node": ">=12"
-    },
     "dependencies": {
         "google-protobuf": "^3.11.4",
         "grpc": "^1.24.2"

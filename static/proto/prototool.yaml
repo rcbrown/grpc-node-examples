@@ -1,0 +1,31 @@
+protoc:
+  version: 3.8.0
+
+lint:
+  group: uber2
+  rules:
+    # prototool's Uber v2 rules require that the .proto file contain file options for several output
+    # languages; this application only uses JavaScript, so disabling the others.
+    remove:
+      - FILE_OPTIONS_REQUIRE_JAVA_PACKAGE
+      - FILE_OPTIONS_REQUIRE_JAVA_OUTER_CLASSNAME
+      - FILE_OPTIONS_REQUIRE_JAVA_MULTIPLE_FILES
+      - FILE_OPTIONS_JAVA_PACKAGE_SAME_IN_DIR
+      - FILE_OPTIONS_JAVA_MULTIPLE_FILES_SAME_IN_DIR
+      - FILE_OPTIONS_EQUAL_JAVA_PACKAGE_PREFIX
+      - FILE_OPTIONS_EQUAL_JAVA_MULTIPLE_FILES_TRUE
+      - FILE_OPTIONS_REQUIRE_CSHARP_NAMESPACE
+      - FILE_OPTIONS_REQUIRE_GO_PACKAGE
+      - FILE_OPTIONS_REQUIRE_OBJC_CLASS_PREFIX
+      - FILE_OPTIONS_REQUIRE_PHP_NAMESPACE
+      # Need to disable; static code generation can't handle packages
+      - PACKAGE_IS_DECLARED
+      - PACKAGE_LOWER_CASE
+      - PACKAGE_LOWER_SNAKE_CASE
+      - PACKAGE_MAJOR_BETA_VERSIONED
+      - PACKAGE_NO_KEYWORDS
+
+generate:
+  plugins:
+    - name: js
+      output: ../generated-source/js

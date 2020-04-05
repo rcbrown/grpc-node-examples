@@ -12,16 +12,8 @@ module.exports = class LibraryApiServer {
 
     constructor({ host, port }) {
         this.server = new grpc.Server();
-
-        // Add a descriptor with gRPC metadata that says what message types should be received
-        // and returned at various URLS, followed by a map of handlers that match with RPC names
-        // that implement the functionality at those endpoints. This class puts those handlers
-        // into public instance fields below, so we can just pass `this` as the implementation.
         this.server.addService(libraryApiGrpc.LibraryAPIService, this);
-
-        // Tell the server where it should listen for network connections.
         this.server.bind(`${host}:${port}`, grpc.ServerCredentials.createInsecure());
-
         this.dao = new LibraryDao();
     }
 
@@ -42,6 +34,8 @@ module.exports = class LibraryApiServer {
     // They are matched by name.
 
     getBooks = (call, callback) => {
+
+        const getBooksRequest = new libraryApiPb.getBookksRequest();
         // This is the only business logic
         const books = this.dao.getBooks();
 
@@ -54,11 +48,8 @@ module.exports = class LibraryApiServer {
             return pbBook;
         });
         
-        // Build a protobuf response message with the list of books
         const getBooksResponse = new libraryApiPb.GetBooksResponse();
         getBooksResponse.setLibraryBooksList(pbBooks);
-
-        // First parameter is error, second is response message
         callback(null, getBooksResponse);
     }
 
@@ -82,7 +73,6 @@ module.exports = class LibraryApiServer {
         const checkoutBookResponse = new libraryApiPb.CheckoutBookResponse();
         checkoutBookResponse.setLibraryBook(pbBook);
         
-        // First parameter is error, second is response message
         callback(null, checkoutBookResponse);
     }
 }

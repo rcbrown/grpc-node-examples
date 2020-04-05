@@ -106,3 +106,5 @@ dist
 # TODO: Remove this
 grpc-sample-stuff
 .vscode
+
+**/generated/*

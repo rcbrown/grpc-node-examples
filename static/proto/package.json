@@ -1,0 +1,26 @@
+{
+    "name": "grpc-node-examples-proto",
+    "version": "1.0.0",
+    "description": "Examples for this blog:",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prototool": "docker run --rm -v $(pwd):/work uber/prototool prototool",
+        "lint": "npm run prototool lint .",
+        "break:check": "npm run prototool break check .",
+        "list:rules": "npm run prototool --list-linters lint ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:rcbrown/grpc-node-examples.git"
+    },
+    "keywords": [
+        "grpc",
+        "nodejs",
+        "protobuf",
+        "protoc",
+        "prototool"
+    ],
+    "author": "Russell C. Brown",
+    "license": "ISC"
+}

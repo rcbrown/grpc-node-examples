@@ -4,7 +4,7 @@ module.exports = class LibraryDao {
         {
             title: "The Sirens of Titan",
             author: "Kurt Vonnegut",
-            checkoutStatus: "CHECKOUT_STATUS_OUT",
+            checkoutStatus: "CHECKOUT_STATUS_IN",
         },
         {
             title: "Snow Crash",
@@ -18,6 +18,8 @@ module.exports = class LibraryDao {
     }
 
     checkoutBook(title) {
-        return this.books.filter(book => book.title === title).shift();
+        const book = this.books.filter(book => book.title === title).shift();
+        book.checkoutStatus = "CHECKOUT_STATUS_OUT";
+        return book;
     }
 };

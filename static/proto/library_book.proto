@@ -1,0 +1,19 @@
+// library_book.proto
+
+syntax = "proto3";
+
+// package com.rcbrown.grpc.v1;
+
+// Indicates whether or not the library book is checked out.
+enum CheckoutStatus {
+    CHECKOUT_STATUS_INVALID = 0;
+    CHECKOUT_STATUS_IN = 1;
+    CHECKOUT_STATUS_OUT = 2;
+}
+
+// A book, to read and enjoy.
+message LibraryBook {
+    string title = 1;
+    string author = 2;
+    CheckoutStatus checkout_status = 3;
+}

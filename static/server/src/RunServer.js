@@ -2,8 +2,8 @@ const LibraryApiServer = require('./LibraryApiServer');
 
 module.exports = function runServer() {
     const server = new LibraryApiServer({
-        host: '0.0.0.0',
-        port: '6565',
+        host: process.env.HOST || '0.0.0.0',
+        port: process.env.PORT || '6565',
     });
     server.start();
 }

@@ -1,7 +1,7 @@
 {
     "name": "grpc-node-examples-static",
     "version": "1.0.0",
-    "description": "Dynamic code generation example project",
+    "description": "Dynamic code generation example client",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,10 +24,10 @@
     "bugs": {
         "url": "https://github.com/rcbrown/grpc-node-examples/issues"
     },
+    "homepage": "https://github.com/rcbrown/grpc-node-examples#readme",
     "engines": {
         "node": ">=12"
     },
-    "homepage": "https://github.com/rcbrown/grpc-node-examples#readme",
     "dependencies": {
         "@grpc/proto-loader": "^0.5.4",
         "google-protobuf": "^3.11.4",

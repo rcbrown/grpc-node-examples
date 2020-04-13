@@ -19,7 +19,8 @@
         "nodejs",
         "protobuf",
         "protoc",
-        "prototool"
+        "prototool",
+        "proto-loader"
     ],
     "author": "Russell C. Brown",
     "license": "ISC"

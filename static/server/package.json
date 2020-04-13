@@ -2,7 +2,7 @@
     "name": "grpc-node-examples-static",
     "version": "1.0.0",
     "description": "Static code generation example server",
-    "main": "src/index.js",
+    "main": "index.js",
     "scripts": {
         "clean": "rimraf generated",
         "test": "echo \"Error: no test specified\" && exit 1",

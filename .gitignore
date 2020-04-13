@@ -104,7 +104,6 @@ dist
 .tern-port
 
 # TODO: Remove this
-grpc-sample-stuff
 .vscode
 
 **/generated/*

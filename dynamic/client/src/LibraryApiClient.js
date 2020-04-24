@@ -2,8 +2,6 @@ const path = require('path');
 const grpc = require('grpc');
 const protoloader = require('@grpc/proto-loader');
 
-const LibraryDao = require('../../../dao/LibraryDao');
-
 module.exports = class LibraryApiClient {
 
     constructor({ host, port }) {

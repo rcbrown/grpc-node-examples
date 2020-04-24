@@ -6,8 +6,6 @@ const libraryApiPb = require('../generated/library_api_pb');
 const libraryBookGrpc = require('../generated/library_book_grpc_pb');
 const libraryBookPb = require('../generated/library_book_pb');
 
-const LibraryDao = require('../../../dao/LibraryDao');
-
 module.exports = class LibraryApiClient {
 
     constructor({ host, port }) {
